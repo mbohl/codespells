@@ -29,16 +29,35 @@ var world;
 // What I demo'd for you 
 //var world = new World(20, 20, 20, 50, 20, 30, 1, 3500, 5000);
 
+// gui
+var gui;
+var params = {
+	width: 10,
+	height: 10,
+	depth: 10, 
+	ratio_1: 35,
+	ratio_2: 35,
+	ratio_3: 30,
+	density_1: 1,
+	density_2: 3500,
+	density_3: 4000
+};
+
+function create_world() {
+	console.log('updating with params');
+	console.log(params);
+	world = new World(params.width, params.height, params.depth, params.ratio_1, params.ratio_2, params.ratio_3, params.density_1, params.density_2, params.density_3, update_world);
+};
+
 init();
 animate();
 
 function init() {
 
+	camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 3000 );
+	camera.position.z = 300;
 
-	camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 1, 3000 );
-	camera.position.z = 800;
-
-	controls = new THREE.OrbitControls(camera);
+	controls = new THREE.OrbitControls(camera, document.getElementById( 'container' ));
 	controls.addEventListener('change', render);
 
 	
@@ -47,6 +66,7 @@ function init() {
 
 	renderer = new THREE.WebGLRenderer( { antialias: false });
 	//renderer.setClearColor ( scene.fog.color, 1);
+	//renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
 	container = document.getElementById( 'container' );
@@ -62,10 +82,25 @@ function init() {
 	directionalLight.position.z = 3;
 	scene.add( directionalLight );
 
-        world = new World(10, 10, 10, 30, 35, 35, 1, 3500, 5000, update_world);
+	//setup gui
+	gui = new dat.GUI({
+		height : 10 * 32 -1
+	});	
+	gui.add(params, 'width').name('Width').min(1).max(50).step(1).onFinishChange(create_world);
+	gui.add(params, 'height').name('Height').min(1).max(50).step(1).onFinishChange(create_world);
+	gui.add(params, 'depth').name('Depth').min(1).max(50).step(1).onFinishChange(create_world);
+	gui.add(params, 'ratio_1').name('Ratio 1').min(0).max(100).step(1).onFinishChange(create_world);
+	gui.add(params, 'ratio_2').name('Ratio 2').min(0).max(100).step(1).onFinishChange(create_world);
+	gui.add(params, 'ratio_3').name('Ratio 3').min(0).max(100).step(1).onFinishChange(create_world);
+	gui.add(params, 'density_1').name('Density 1').min(0).max(5000).step(100).onFinishChange(create_world);
+	gui.add(params, 'density_2').name('Density 2').min(0).max(5000).step(100).onFinishChange(create_world);
+	gui.add(params, 'density_3').name('Density 3').min(0).max(5000).step(100).onFinishChange(create_world);
+
+	create_world();
 
         console.log('init complete');
 }
+
 
 function update_world (data) {
     console.log("Got updated world");
@@ -108,7 +143,9 @@ function generateCube() {
 	}
 
 	// center back on canvas
-	cubeGroup.position.set(-i*scale/2,-j*scale/2,-k*scale/2);
+	//cubeGroup.position.set(-i*scale/2,-j*scale/2,-k*scale/2);
+	cubeGroup.position.set(-i*scale/2,j*scale/2,-k*scale/2);
+	//cubeGroup.position.set(0,0,0);
 	cubeGroup.rotation.x +=1.75;
 	//cubeGroup.rotation.z +=.75;
 

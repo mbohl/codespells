@@ -9,13 +9,31 @@ body {
     overflow:hidden;
 }
 </style>
+
 <div id="container"></div>  
 <script src="../javascripts/remote/jquery-1.11.1.min.js"></script>
 <script src="../javascripts/three.min.js"></script>
+<script src="../javascripts/dat.gui.min.js"></script>
 <script src="../javascripts/OrbitControls.js"></script>
 <script src="../javascripts/remote/CodeSpellsWorldsRemoteEngine.js"></script>
 <script src="../javascripts/remote/CodeSpellsWorldsViewer.js"</script>
 <script>
+var FizzyText = function() {
+  this.message = 'dat.gui';
+  this.speed = 0.8;
+  this.displayOutline = false;
+  this.explode = function() {};
+  // Define render logic ...
+};
+
+window.onload = function() {
+  var text = new FizzyText();
+  var gui = new dat.GUI();
+  gui.add(text, 'message');
+  gui.add(text, 'speed', -5, 5);
+  gui.add(text, 'displayOutline');
+  gui.add(text, 'explode');
+};
 </script>
 </head>
 <body>
