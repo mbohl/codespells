@@ -83,18 +83,72 @@ function init() {
 	scene.add( directionalLight );
 
 	//setup gui
+/*
+        width: 10,
+        height: 10,
+        depth: 10,
+        ratio_1: 35,
+        ratio_2: 35,
+        ratio_3: 30,
+        density_1: 1,
+        density_2: 3500,
+        density_3: 4000
+*/
 	gui = new dat.GUI({
-		height : 10 * 32 -1
+		load: {
+			  "preset": "10x10x10",
+			  "closed": false,
+			  "remembered": {
+			    "10x10x10": {
+			      "0": {
+				"width": 10,
+				"height": 10,
+				"depth": 10,
+				"ratio_1": 35,
+				"ratio_2": 35,
+				"ratio_3": 30,
+				"density_1": 1,
+				"density_2": 3500,
+				"density_3": 5000
+			      }
+			    },
+			    "Curtain": {
+			      "0": {
+				"width": 10,
+				"height": 10,
+				"depth": 1,
+				"ratio_1": 35,
+				"ratio_2": 35,
+				"ratio_3": 30,
+				"density_1": 1,
+				"density_2": 3500,
+				"density_3": 5000
+			      }
+			    },
+			  },
+			},
+		preset: '10x10x10'
 	});	
-	gui.add(params, 'width').name('Width').min(1).max(50).step(1).onFinishChange(create_world);
-	gui.add(params, 'height').name('Height').min(1).max(50).step(1).onFinishChange(create_world);
-	gui.add(params, 'depth').name('Depth').min(1).max(50).step(1).onFinishChange(create_world);
+	var f1 = gui.addFolder('Dimensions');
+	f1.add(params, 'width').name('Width').min(1).max(50).step(1).onFinishChange(create_world);
+	f1.add(params, 'height').name('Height').min(1).max(50).step(1).onFinishChange(create_world);
+	f1.add(params, 'depth').name('Depth').min(1).max(50).step(1).onFinishChange(create_world);
+	f1.open();
+
+	var f2 = gui.addFolder('Material 1');
 	gui.add(params, 'ratio_1').name('Ratio 1').min(0).max(100).step(1).onFinishChange(create_world);
-	gui.add(params, 'ratio_2').name('Ratio 2').min(0).max(100).step(1).onFinishChange(create_world);
-	gui.add(params, 'ratio_3').name('Ratio 3').min(0).max(100).step(1).onFinishChange(create_world);
 	gui.add(params, 'density_1').name('Density 1').min(0).max(5000).step(100).onFinishChange(create_world);
+	f2.open();
+
+	var f3 = gui.addFolder('Material 2');
+	gui.add(params, 'ratio_2').name('Ratio 2').min(0).max(100).step(1).onFinishChange(create_world);
 	gui.add(params, 'density_2').name('Density 2').min(0).max(5000).step(100).onFinishChange(create_world);
+	f3.open();
+
+	var f4 = gui.addFolder('Material 3');
+	gui.add(params, 'ratio_3').name('Ratio 3').min(0).max(100).step(1).onFinishChange(create_world);
 	gui.add(params, 'density_3').name('Density 3').min(0).max(5000).step(100).onFinishChange(create_world);
+	f4.open();
 
 	create_world();
 
